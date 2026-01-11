@@ -10,16 +10,17 @@ Tells us what the programmer defined.
 #ifndef SYMTAB_H
 #define SYMTAB_H
 
-#define SYMTAB_SIZE 20
-#define SYMBOL_LEN 10
+#define SYMTAB_SIZE 20  // Increased size for Lab 2
+#define SYMBOL_LEN 10   
+
 typedef struct {
     char symbol[SYMBOL_LEN];
-    int address;
+    int address;        // <--- ADDED: Critical for an Assembler
     int is_occupied;    
 } SymNode;
 
-void init_symtab(); // Initializes SymNode SymTab[SYMTAB_SIZE];
-int insert_symbol(char *symbol, int address); // Returns 1 on success, 0 on failure.
+void init_symtab();
+int insert_symbol(char *symbol, int address); // Returns 1 on success, 0 on duplicate/full
 int search_symbol(char *symbol); // Returns address or -1 if not found
 void display_symtab();
 
@@ -35,12 +36,23 @@ Tells us what the machine knows.
 #ifndef OPTAB_H
 #define OPTAB_H
 
-#define OPTAB_SIZE 20
-#define MNEMONIC_LEN 10
-#define MACHINE_CODE_LEN 3
+// Returns hex string (e.g. "00") or NULL if invalid
+char* search_optab(char *mnemonic); 
+
+#endif
+```
+
+Write the implementation of these functions in `optab.c` and test it in `lab2.c`.
+
+```C
+//optab.c
+#include <stdio.h>
+#include <string.h>
+#include "optab.h"
+
 typedef struct {
-    char mnemonic[MNEMONIC_LEN];
-    char machine_code[MACHINE_CODE_LEN];
+    char mnemonic[10];
+    char machine_code[3];
 } OpNode;
 
 // Hardcoded SIC Standard Opcodes (Partial List)
@@ -53,15 +65,13 @@ OpNode OPTAB[] = {
     {"J",   "3C"}, {"AND", "40"}, {"OR",  "44"},
     {"JSUB","48"}, {"RSUB","4C"}
 };
-
 const int OPTAB_LEN = sizeof(OPTAB)/sizeof(OpNode);
 
-char* search_optab(char *mnemonic); // Returns machine code or NULL if not found
-
-#endif
+char* search_optab(char *mnemonic) {
+    // Write your code here. 
+}
 ```
 
-Write the implementation of these functions in `optab.c` and test it in `lab2.c`.
 
 ## Sample `lab2.c`
 ```C
